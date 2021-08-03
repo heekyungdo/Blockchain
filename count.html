@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- <button onclick="getBlockNumber()">getBlockNumber</button>
+    <input type="text" name="" id="blockNum_input" value="" />
+    <div id="blockNum_div"></div> -->
+
+    <button onclick="increment()">increment</button>
+    <button onclick="getCount()">getCount</button>
+    <input type="text" name="" id="count_input" value="" />
+  </body>
+
+  <script type="text/javascript" src="./lib/bignumber.min.js"></script>
+  <script type="text/javascript" src="./lib/web3.js"></script>
+
+  <script type="text/javascript">
+    if (typeof web3 !== "undefined") {
+      web3 = new Web3(web3.currentProvider);
+    } else {
+      // set the provider you want from Web3.providers
+      web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+    }
+
+    if (web3.isConnected()) {
+      console.log("connected");
+    } else {
+      console.log("not connected");
+    }
+
+    web3.eth.defaultAccount = web3.eth.accounts[0];
+
+    let abi2 = [
+      {
+        inputs: [],
+        name: "getCount",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [],
+        name: "increment",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+    ];
+
+    let contractAddres2 = "0x9290c6d109E92EbC77A0f34E07c83477180FE488";
+
+    let smartContract2 = web3.eth.contract(abi2).at(contractAddres2);
+    console.log(smartContract2);
+
+    function increment() {
+      smartContract2.increment.sendTransaction(function (error, hash) {});
+    }
+
+    function getCount() {
+      smartContract2.getCount.call(function (error, result) {
+        document.getElementById("count_input").value = result.toNumber();
+      });
+    }
+  </script>
+</html>
